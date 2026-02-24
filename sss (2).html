@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Trading Group | Tableau de Bord Premium</title>
+    <!-- Importation des polices et icônes -->
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script type="text/javascript" src="https://s3.tradingview.com"></script>
+    
+    <style>
+        :root {
+            --gold: #f0b90b;
+            --gold-hover: #fcd535;
+            --bg-body: #0b0e11;
+            --card-bg: rgba(30, 35, 41, 0.9);
+            --danger: #f6465d;
+            --success: #0ecb81;
+            --text-main: #eaecef;
+            --text-muted: #848e9c;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body); color: var(--text-main);
+            display: flex; height: 100vh; overflow: hidden;
+        }
+
+        /* --- SECTION GAUCHE : GRAPHIOUE --- */
+        .left-panel { flex: 2.5; border-right: 1px solid #2b2f36; background: #000; position: relative; }
+        .market-header { position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 5px; border: 1px solid var(--gold); }
+
+        /* --- SECTION CENTRALE : DASHBOARD --- */
+        .main-content {
+            flex: 3; padding: 20px; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at center, #1e2329 0%, #0b0e11 100%);
+        }
+        .glass-card {
+            background: var(--card-bg); width: 100%; max-width: 500px;
+            border-radius: 24px; padding: 40px; text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+        }
+
+        .user-avatar { width: 80px; height: 80px; background: var(--gold); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: black; font-weight: bold; }
+        
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0; }
+        .stat-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-item small { color: var(--text-muted); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-item b { font-size: 1.4rem; color: var(--gold); }
+
+        .progress-container { margin: 30px 0; }
+        .track { background: rgba(255,255,255,0.1); height: 10px; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+        .bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold), #fff); transition: width 0.1s linear; }
+        .percentage { font-size: 2.5rem; font-weight: 800; }
+
+        .alert-frais {
+            display: none; background: rgba(246, 70, 93, 0.1); border: 1px solid var(--danger);
+            padding: 20px; border-radius: 15px; margin-top: 10px; animation: fadeInUp 0.5s ease;
+        }
+
+        /* --- SECTION DROITE : INVESTISSEURS --- */
+        .right-panel { flex: 2; background: #161a1e; display: flex; flex-direction: column; border-left: 1px solid #2b2f36; }
+        .right-header { padding: 25px; border-bottom: 1px solid #2b2f36; }
+        .investor-list { flex-grow: 1; overflow-y: auto; padding: 20px; }
+        .investor-card {
+            background: #1e2329; padding: 18px; border-radius: 15px; margin-bottom: 12px;
+            cursor: pointer; border: 1px solid transparent; transition: all 0.3s;
+        }
+        .investor-card:hover { border-color: var(--gold); transform: translateX(-5px); }
+        .investor-card.active { background: #2b3139; border-color: var(--gold); box-shadow: 0 0 20px rgba(240,185,11,0.1); }
+
+        .status-tag { font-size: 0.7rem; padding: 3px 10px; border-radius: 5px; font-weight: bold; text-transform: lowercase; }
+        .tag-v { background: rgba(14, 203, 129, 0.15); color: var(--success); }
+        .tag-p { background: rgba(240, 185, 11, 0.15); color: var(--gold); }
+
+        /* --- BOUTONS --- */
+        .btn-gold { background: var(--gold); color: black; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        .btn-gold:hover { background: var(--gold-hover); transform: scale(1.02); }
+
+        /* --- MODAL --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-content { background: var(--card-bg); padding: 40px; border-radius: 30px; border: 1px solid var(--gold); width: 90%; max-width: 450px; text-align: center; }
+        .input-file { background: #0b0e11; padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px dashed var(--text-muted); color: var(--text-muted); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #2b2f36; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- GAUCHE : FLUX TRADINGVIEW RÉEL -->
+    <div class="left-panel">
+        <div class="market-header">Flux Binance Direct • BTC/USDT</div>
+        <div id="tv_chart" style="height: 100%;"></div>
+        <script>
+            new TradingView.widget({ "autosize": true, "symbol": "BINANCE:BTCUSDT", "interval": "D", "theme": "dark", "container_id": "tv_chart", "locale": "fr" });
+        </script>
+    </div>
+
+    <!-- CENTRE : LE DASHBOARD CHARMANT -->
+    <div class="main-content">
+        <div class="glass-card" id="main-card">
+            <div class="user-avatar" id="avatar-init">BK</div>
+            <h2 id="user-name" style="margin: 0; font-size: 1.8rem;">Bernad Kingombe</h2>
+            <p id="user-id" style="color: var(--text-muted); font-size: 0.8rem; margin-top: 5px;"></p>
+
+            <div class="stat-grid">
+                <div class="stat-item"><small>Capital Investi</small><b id="user-invest">50$</b></div>
+                <div class="stat-item"><small>Profit Généré</small><b id="user-profit" style="color:var(--success)">10,000$</b></div>
+            </div>
+
+            <p id="status-label" style="font-weight: 600;">Authentification Blockchain...</p>
+            <div class="progress-container">
+                <div class="track"><div id="bar" class="bar"></div></div>
+                <div class="percentage" id="pct">0%</div>
+            </div>
+
+            <div id="alert-frais" class="alert-frais">
+                <div style="color: var(--danger); font-weight: bold; margin-bottom: 10px;">⚠️ ERREUR DE TRANSMISSION</div>
+                <p style="font-size: 0.85rem; margin: 0 0 15px; color: #ccc;">Le système a détecté un manque de frais de transmission réseau (GAS FEES). Veuillez confirmer votre bordereau pour débloquer les fonds.</p>
+                <button class="btn-gold" onclick="openModal()">DÉBLOQUER LES FONDS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DROITE : LISTE ÉLÉGANTE -->
+    <div class="right-panel">
+        <div class="right-header">
+            <h3 style="margin:0">Comptes Clients VIP</h3>
+            <small style="color: var(--text-muted)">Historique de validation en direct</small>
+        </div>
+        <div class="investor-list" id="list"></div>
+    </div>
+
+    <!-- MODAL DE CONFIRMATION -->
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="color: var(--gold); margin-top: 0;">Validation Bordereau</h2>
+            <p style="font-size: 0.9rem;">Joignez la preuve de paiement des frais (Capture d'écran ou PDF) pour débloquer votre retrait.</p>
+            
+            <div class="input-file">
+                <input type="file" id="file" style="width: 100%;">
+            </div>
+            
+            <input type="text" placeholder="Numéro de référence du bordereau" style="width: 100%; padding: 12px; background: #0b0e11; border: 1px solid #333; color: white; border-radius: 8px; margin-bottom: 20px;">
+
+            <button class="btn-gold" style="background: var(--success); color: white;" onclick="submitBordereau()">CONFIRMER LE DÉPÔT</button>
+            <button class="btn-gold" style="background: transparent; border: 1px solid #333; color: var(--text-muted);" onclick="closeModal()">ANNULER</button>
+        </div>
+    </div>
+
+    <script>
+        // DONNÉES DES INVESTISSEURS
+        const users = [
+            { name: "Bernad Kingombe", invest: "50$", profit: "10,000$", status: "en attente", id: "BK-TX-9902", limit: 80 },
+            { name: "Jean-Marc Kabila", invest: "1,500$", profit: "35,000$", status: "verifié", id: "JK-TX-1120", limit: 100 },
+            { name: "Sarah Mensah", invest: "2,500$", profit: "60,000$", status: "verifié", id: "SM-TX-8842", limit: 100 },
+            { name: "Alain Makosso", invest: "95$", profit: "2,100$", status: "en attente", id: "AM-TX-3310", limit: 45 },
+            { name: "Moussa Traoré", invest: "800$", profit: "16,000$", status: "verifié", id: "MT-TX-4401", limit: 100 },
+            { name: "Dimitri Volk", invest: "10,000$", profit: "250,000$", status: "verifié", id: "DV-TX-0092", limit: 100 },
+            { name: "Alice N. ", invest: "250$", profit: "5,500$", status: "en attente", id: "AN-TX-7712", limit: 25 },
+            { name: "Samuel Eto'o", invest: "50,000$", profit: "1,200,000$", status: "verifié", id: "SE-TX-1000", limit: 100 }
+        ];
+
+        let currentTimer;
+
+        function runDashboard(idx, element) {
+            // Nettoyage
+            clearInterval(currentTimer);
+            document.querySelectorAll('.investor-card').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+
+            const u = users[idx];
+            document.getElementById('user-name').innerText = u.name;
+            document.getElementById('user-id').innerText = "ID TRANSACTION: " + u.id;
+            document.getElementById('user-invest').innerText = u.invest;
+            document.getElementById('user-profit').innerText = u.profit;
+            document.getElementById('avatar-init').innerText = u.name.substring(0, 2).toUpperCase();
+            
+            const bar = document.getElementById('bar');
+            const pct = document.getElementById('pct');
+            const alertBox = document.getElementById('alert-frais');
+            const lbl = document.getElementById('status-label');
+
+            alertBox.style.display = "none";
+            lbl.style.color = "var(--text-muted)";
+            lbl.innerText = "Synchronisation réseau...";
+
+            let p = 0;
+            currentTimer = setInterval(() => {
+                if(p >= u.limit) {
+                    clearInterval(currentTimer);
+                    if(u.limit < 100) {
+                        lbl.innerText = "SUSPENDU : FRAIS MANQUANTS";
+                        lbl.style.color = "var(--danger)";
+                        alertBox.style.display = "block";
+                    } else {
+                        lbl.innerText = "TRANSFERT TERMINÉ AVEC SUCCÈS";
+                        lbl.style.color = "var(--success)";
+                    }
+                } else {
+                    p++;
+                    bar.style.width = p + "%";
+                    pct.innerText = p + "%";
+                    if(p == 15) lbl.innerText = "Validation du portefeuille...";
+                }
+            }, 60);
+        }
+
+        // Créer la liste des investisseurs
+        const listDiv = document.getElementById('list');
+        users.forEach((u, i) => {
+            const card = document.createElement('div');
+            card.className = 'investor-card';
+            card.onclick = function() { runDashboard(i, this); };
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                    <b>${u.name}</b> <span style="color:var(--success)">+${u.profit}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <small style="color:var(--text-muted)">Invest: ${u.invest}</small>
+                    <span class="status-tag ${u.status === 'verifié' ? 'tag-v' : 'tag-p'}">${u.status}</span>
+                </div>
+            `;
+            listDiv.appendChild(card);
+        });
+
+        // Modales
+        function openModal() { document.getElementById('modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        function submitBordereau() {
+            alert("Bordereau reçu ! Notre service financier valide votre dépôt sous 1h à 24h.");
+            closeModal();
+        }
+
+        // Démarrage automatique
+        window.onload = () => { document.querySelector('.investor-card').click(); };
+    </script>
+</body>
+</html>
