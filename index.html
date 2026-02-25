@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PROTOCOLE I : L'ACCÈS</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root { --gold: #b89241; --black: #050505; }
+        body { margin: 0; background: var(--black); color: var(--gold); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        .login-box { padding: 40px 20px; border: 1px solid var(--gold); width: 90%; max-width: 350px; background: #0a0a0a; text-align: center; box-shadow: 0 0 30px rgba(184, 146, 65, 0.1); }
+        h1 { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 4px; margin-bottom: 30px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid #222; color: #fff; font-size: 16px; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--gold); }
+        .btn { background: var(--gold); color: #000; border: none; width: 100%; padding: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Cinzel'; margin-top: 20px; letter-spacing: 2px; }
+        .law { font-size: 0.65rem; color: #555; margin-top: 25px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>PROTOCOLE D'ACCÈS</h1>
+        <input type="text" placeholder="NOM D'INITIÉ" id="user">
+        <input type="password" placeholder="CLÉ SCELLÉE">
+        <button class="btn" onclick="entrer()">Pénétrer le Cercle</button>
+        <p class="law">"Faites-vous courtiser, ne courtisez jamais." — Loi n°9</p>
+    </div>
+    <script>
+        function entrer() {
+            const name = document.getElementById('user').value;
+            if(name) {
+                localStorage.setItem('username', name);
+                window.location.href = 'dashboard.html';
+            } else { alert("L'anonymat est une faiblesse. Identifiez-vous."); }
+        }
+    </script>
+</body>
+</html>

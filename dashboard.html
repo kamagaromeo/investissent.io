@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROTOCOLE II : LE SANCTUAIRE</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root { --gold: #b89241; --bg: #050505; --green: #0ecb81; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; padding: 20px; }
+        header { border-bottom: 1px solid var(--gold); padding: 20px 0; text-align: center; margin-bottom: 30px; }
+        .user-info { font-family: 'Cinzel'; color: var(--gold); font-size: 0.9rem; margin-bottom: 20px; }
+        .card { background: #0f0f0f; padding: 25px; border-radius: 4px; border: 1px solid #1a1a1a; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .label { color: #666; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 10px; }
+        .value { font-family: 'Cinzel'; font-size: 1.8rem; color: var(--gold); }
+        .progress-box { text-align: center; margin: 40px 0; }
+        .track { background: #1a1a1a; height: 6px; width: 100%; border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .bar { height: 100%; width: 0%; background: var(--gold); transition: width 0.1s linear; }
+        .pct { font-size: 3rem; font-weight: 900; color: #fff; display: block; }
+        .btn-action { background: var(--gold); color: #000; border: none; width: 100%; padding: 20px; font-weight: bold; font-family: 'Cinzel'; text-transform: uppercase; display: none; cursor: pointer; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <header><div class="user-info" id="display-name">INITIÉ</div></header>
+
+    <div class="card">
+        <span class="label">Capital d'Origine</span>
+        <div class="value">50.00$</div>
+    </div>
+
+    <div class="card">
+        <span class="label">Calcul Pythagoricien x8</span>
+        <div class="value" style="color: var(--green);">10,000.00$</div>
+    </div>
+
+    <div class="progress-box">
+        <span class="label">Extraction des Fonds Blockchain</span>
+        <div class="track"><div id="bar" class="bar"></div></div>
+        <span class="pct" id="pct">0%</span>
+    </div>
+
+    <button class="btn-action" id="btn-withdraw" onclick="window.location.href='retrait.html'">Exécuter le Retrait</button>
+
+    <script>
+        document.getElementById('display-name').innerText = "DISCIPLE : " + (localStorage.getItem('username') || "INCONNU");
+        let p = 0;
+        const interval = setInterval(() => {
+            p++;
+            document.getElementById('bar').style.width = p + '%';
+            document.getElementById('pct').innerText = p + '%';
+            if(p >= 98) {
+                clearInterval(interval);
+                document.getElementById('btn-withdraw').style.display = 'block';
+                document.getElementById('pct').innerText = "VÉRIFIÉ";
+            }
+        }, 120);
+    </script>
+</body>
+</html>
