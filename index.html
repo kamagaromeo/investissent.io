@@ -2,171 +2,260 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PLACEMENT DES FONDS | Système d'Élite x8</title>
+    
+    <!-- Polices et Icônes -->
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
     <style>
-        :root { --gold: #D4AF37; --dark: #050505; --green: #2ecc71; --sidebar-bg: #0d0d0d; }
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--dark); color: white; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
-        header { background: #000; padding: 15px; text-align: center; border-bottom: 2px solid var(--gold); letter-spacing: 5px; font-weight: bold; color: var(--gold); text-transform: uppercase; }
-
-        .container { display: flex; flex: 1; overflow: hidden; }
-
-        /* GAUCHE : LISTE DES 40 INVESTISSEURS (DÉFILANTE) */
-        .sidebar { width: 350px; background: var(--sidebar-bg); border-right: 1px solid #222; display: flex; flex-direction: column; }
-        .sidebar-header { padding: 15px; background: #111; border-bottom: 1px solid var(--gold); font-size: 14px; text-align: center; color: var(--gold); }
-        .investor-list { flex: 1; overflow-y: auto; padding: 10px; }
-        
-        .investor-item { 
-            background: #151515; padding: 12px; margin-bottom: 8px; border-radius: 4px; 
-            border-left: 3px solid #333; cursor: pointer; transition: 0.3s; font-size: 13px;
+        :root { 
+            --gold: #D4AF37; 
+            --dark: #050505; 
+            --green: #2ecc71; 
+            --card-bg: #111; 
         }
-        .investor-item:hover { border-left-color: var(--gold); background: #1a1a1a; }
-        .investor-item b { color: var(--gold); }
-        .status-dot { height: 8px; width: 8px; background-color: var(--green); border-radius: 50%; display: inline-block; margin-right: 5px; }
 
-        /* CENTRE : DASHBOARD & FORMULAIRES */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; background: radial-gradient(circle at center, #111 0%, #050505 100%); }
-        .card { background: #111; padding: 30px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #222; box-shadow: 0 10px 50px rgba(0,0,0,0.8); }
+        body { 
+            margin: 0; 
+            font-family: 'Inter', sans-serif; 
+            background: var(--dark); 
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+        }
+
+        header { 
+            background: #000; 
+            padding: 15px; 
+            text-align: center; 
+            border-bottom: 2px solid var(--gold); 
+            font-weight: 900; 
+            color: var(--gold); 
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container { 
+            display: flex; 
+            flex-direction: column; 
+            flex: 1; 
+        }
+
+        /* SECTION CENTRALE (DASHBOARD) - PRIORITÉ MOBILE */
+        .main-content { 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%);
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 15px; 
+            width: 100%; 
+            max-width: 400px; 
+            border: 1px solid #222; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
         
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; }
-        .btn-gold { width: 100%; padding: 20px; background: var(--gold); border: none; color: black; font-weight: bold; cursor: pointer; text-transform: uppercase; border-radius: 5px; margin-top: 10px; }
-        .btn-gold:hover { background: #fff; }
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            background: #000; 
+            border: 1px solid #333; 
+            color: white; 
+            border-radius: 8px; 
+            font-size: 16px; /* Évite le zoom auto sur iPhone */
+            box-sizing: border-box;
+        }
 
-        /* MODAL (HISTORIQUE & CONTACT) */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: white; color: black; padding: 30px; border-radius: 8px; width: 90%; max-width: 450px; text-align: center; }
-        .history-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
-        .history-table th { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
-        .history-table td { padding: 10px; border: 1px solid #ddd; }
+        .btn-gold { 
+            width: 100%; 
+            padding: 18px; 
+            background: var(--gold); 
+            border: none; 
+            color: black; 
+            font-weight: 800; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            border-radius: 8px; 
+            margin-top: 10px;
+            transition: 0.3s;
+        }
 
-        .whatsapp-btn { display: block; background: #25D366; color: white; padding: 15px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; }
+        /* LISTE DES INVESTISSEURS (ADAPTÉE MOBILE) */
+        .investor-section {
+            width: 100%;
+            background: #0d0d0d;
+            padding: 20px 0;
+        }
+
+        .section-title {
+            padding: 0 20px 15px;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .investor-list { 
+            display: flex;
+            overflow-x: auto; /* Défilement horizontal sur mobile */
+            padding: 0 15px 15px;
+            gap: 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .investor-item { 
+            min-width: 220px;
+            background: #151515; 
+            padding: 15px; 
+            border-radius: 10px; 
+            border-bottom: 3px solid var(--gold); 
+            font-size: 12px;
+        }
+
+        /* MODAL */
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 2000; 
+            align-items: center; 
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content { 
+            background: white; 
+            color: black; 
+            padding: 25px; 
+            border-radius: 15px; 
+            width: 100%; 
+            max-width: 350px; 
+            text-align: center; 
+        }
+
+        .whatsapp-btn { 
+            display: block; 
+            background: #25D366; 
+            color: white; 
+            padding: 15px; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-top: 20px; 
+        }
+
+        .profit-box {
+            background: #000; 
+            border: 1px solid var(--green); 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
-<header>Placement des Fonds - Autorité de Gestion</header>
+<header>Placement des Fonds v8.2</header>
 
 <div class="container">
-    <!-- GAUCHE : LISTE DE 40 INVESTISSEURS -->
-    <div class="sidebar">
-        <div class="sidebar-header">FLUX DES PROFITS EN DIRECT (40)</div>
-        <div class="investor-list" id="investorList">
-            <!-- Le JS va remplir les 40 noms ici -->
-        </div>
-    </div>
-
-    <!-- CENTRE : INSCRIPTION ET CALCULATEUR -->
+    
     <div class="main-content">
         
-        <!-- SECTION 1 : INSCRIPTION -->
+        <!-- ÉTAPE 1 : INSCRIPTION -->
         <div id="step1" class="card">
-            <h2 style="color: var(--gold); text-align: center;">Accès au Cercle Privé</h2>
-            <p style="text-align: center; font-size: 13px; color: #888;">Loi n°28 : L'audace est la clé de la richesse.</p>
+            <h2 style="color: var(--gold); margin-top: 0; text-align: center;">Cercle Privé</h2>
+            <p style="text-align: center; font-size: 12px; color: #888;">Accès restreint aux investisseurs qualifiés.</p>
             <input type="text" id="regNom" placeholder="Nom complet">
-            <input type="text" id="regPays" placeholder="Pays de résidence">
-            <input type="tel" id="regTel" placeholder="Numéro (ex: +237 6...)">
-            <input type="password" id="regPass" placeholder="Mot de passe confidentiel">
-            <button class="btn-gold" onclick="goToStep2()">Créer mon compte d'investisseur</button>
+            <input type="tel" id="regTel" placeholder="Numéro WhatsApp">
+            <input type="password" id="regPass" placeholder="Code secret">
+            <button class="btn-gold" onclick="goToStep2()">Accéder au Dashboard</button>
         </div>
 
-        <!-- SECTION 2 : CALCULATEUR (Caché au départ) -->
+        <!-- ÉTAPE 2 : CALCULATEUR -->
         <div id="step2" class="card" style="display:none;">
-            <h2 style="color: var(--gold); text-align: center;">Tableau de Bord</h2>
-            <p style="text-align: center;">Lancez votre investissement (Min 100$)</p>
+            <h2 style="color: var(--gold); margin-top: 0; text-align: center;">Tableau de Bord</h2>
             <input type="number" id="montantInvest" placeholder="Montant à investir ($)" oninput="updateProfit()">
-            <div style="background: #000; border: 1px solid var(--green); padding: 20px; margin: 15px 0; text-align: center;">
-                <span style="color: #888; font-size: 12px;">PROFIT GARANTI (X8) :</span><br>
-                <span id="profitShow" style="font-size: 35px; color: var(--green); font-weight: bold;">0.00</span> <span style="color: var(--green)">$</span>
+            <div class="profit-box">
+                <span style="color: #888; font-size: 11px;">VOTRE PROFIT ESTIMÉ (X8) :</span><br>
+                <span id="profitShow" style="font-size: 30px; color: var(--green); font-weight: 900;">0.00</span> <span style="color: var(--green)">$</span>
             </div>
-            <button class="btn-gold" style="background: var(--green); color: white;" onclick="showPayment()">LANCER L'INVESTISSEMENT</button>
+            <button class="btn-gold" style="background: var(--green); color: white;" onclick="showPayment()">Lancer le Placement</button>
         </div>
 
-        <!-- FOOTER : DOCS LÉGAUX -->
-        <div style="margin-top: 40px; text-align: center;">
-            <p style="color: var(--gold); font-size: 14px;">DOCUMENTS DE CONFORMITÉ</p>
-            <div style="display: flex; gap: 10px;">
-                <div style="width: 80px; height: 110px; border: 1px dashed #444; font-size: 9px; padding: 5px;">Licence Officielle</div>
-                <div style="width: 80px; height: 110px; border: 1px dashed #444; font-size: 9px; padding: 5px;">Enregistrement État</div>
-                <div style="width: 80px; height: 110px; border: 1px dashed #444; font-size: 9px; padding: 5px;">Garantie Bancaire</div>
-            </div>
+    </div>
+
+    <!-- SECTION INVESTISSEURS (DÉFILEMENT HORIZONTAL) -->
+    <div class="investor-section">
+        <div class="section-title">Transactions en cours (Live)</div>
+        <div class="investor-list" id="investorList">
+            <!-- Rempli par JS -->
         </div>
     </div>
+
 </div>
 
-<!-- MODAL : HISTORIQUE DES TRANSACTIONS -->
-<div id="modalHistory" class="modal-overlay">
-    <div class="modal-content">
-        <h3 id="histName" style="margin: 0; color: var(--gold);"></h3>
-        <p style="font-size: 12px; color: #666;">Historique des 3 dernières transactions</p>
-        <table class="history-table">
-            <thead><tr><th>Date</th><th>Montant</th><th>Profit x8</th></tr></thead>
-            <tbody id="histBody"></tbody>
-        </table>
-        <button onclick="closeModal()" style="padding: 10px; cursor: pointer;">Fermer</button>
-    </div>
-</div>
-
-<!-- MODAL : PAIEMENT (SUPPORT) -->
+<!-- MODAL PAIEMENT -->
 <div id="modalPayment" class="modal-overlay">
     <div class="modal-content">
-        <h2 style="color: #d35400;">ORDRE D'INVESTISSEMENT CRÉÉ</h2>
-        <p>Montant : <b id="finalAmt"></b>$ | Profit : <b id="finalProf"></b>$</p>
-        <p>Pour des raisons de <b>sécurité financière</b>, vous devez contacter notre Superviseur Technique pour obtenir les coordonnées de paiement sécurisées.</p>
-        <a href="https://wa.me" class="whatsapp-btn">CONTACTER LE SUPERVISEUR</a>
+        <h2 style="color: #e67e22; margin-top: 0;">ORDRE D'INVESTISSEMENT</h2>
+        <p style="font-size: 14px;">Montant : <b id="finalAmt"></b>$</p>
+        <p style="font-size: 14px;">Profit garanti : <b id="finalProf" style="color: green;"></b>$</p>
+        <hr>
+        <p style="font-size: 13px; color: #555;">Contactez le <b>Superviseur Technique</b> pour valider votre dépôt et débloquer votre canal de profit.</p>
+        <a href="https://wa.me" class="whatsapp-btn">CONTACTER VIA WHATSAPP</a>
+        <button onclick="document.getElementById('modalPayment').style.display='none'" style="margin-top:15px; background:none; border:none; color:gray; cursor:pointer;">Annuler</button>
     </div>
 </div>
 
 <script>
-    // 1. GÉNÉRATION DES 40 INVESTISSEURS
-    const paysListe = ["Cameroun", "Côte d'Ivoire", "Sénégal", "France", "Gabon", "Bénin", "Togo", "Canada"];
-    const nomsListe = ["Moussa", "Jean", "Sarah", "Alioune", "Marc", "Inès", "Patrick", "Koffi", "Abdou", "Marie", "Samuel", "Félix"];
-    
-    let html = "";
-    for(let i=1; i<=40; i++) {
-        let p = paysListe[Math.floor(Math.random() * paysListe.length)];
-        let n = nomsListe[Math.floor(Math.random() * nomsListe.length)];
-        let m = (Math.random() * (5000 - 100) + 100).toFixed(0);
-        html += `<div class="investor-item" onclick="openHistory('${n} ${i}', '${p}', ${m})">
-                    <span class="status-dot"></span>
-                    <b>${n} ${String.fromCharCode(65 + (i%26))}.</b> (${p})<br>
-                    Investissement : ${m}$ -> <span style="color:var(--green)">+${m*8}$</span>
-                 </div>`;
-    }
-    document.getElementById('investorList').innerHTML = html;
+    // Génération automatique de la liste
+    const pays = ["Cameroun", "Côte d'Ivoire", "Sénégal", "France", "Bénin", "Gabon"];
+    const noms = ["Moussa", "Jean", "Sarah", "Alioune", "Marc", "Inès", "Patrick", "Koffi"];
+    const list = document.getElementById('investorList');
 
-    // 2. FONCTIONS DE NAVIGATION
+    for(let i=0; i<20; i++) {
+        let p = pays[Math.floor(Math.random() * pays.length)];
+        let n = noms[Math.floor(Math.random() * noms.length)];
+        let m = (Math.random() * (2000 - 100) + 100).toFixed(0);
+        list.innerHTML += `
+            <div class="investor-item">
+                <b style="color:var(--gold)">${n} ${String.fromCharCode(65+i)}</b> (${p})<br>
+                Investi: ${m}$ | Profit: <span style="color:var(--green)">${m*8}$</span>
+            </div>
+        `;
+    }
+
     function goToStep2() {
-        if(document.getElementById('regNom').value !== "") {
-            document.getElementById('step1').style.display = 'none';
-            document.getElementById('step2').style.display = 'block';
-        } else { alert("Veuillez remplir vos informations."); }
+        if(document.getElementById('regNom').value == "") { alert("Entrez votre nom"); return; }
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
     }
 
     function updateProfit() {
-        let val = document.getElementById('montantInvest').value;
-        document.getElementById('profitShow').innerText = (val * 8).toFixed(2);
-    }
-
-    // 3. GESTION DES MODALS
-    function openHistory(nom, pays, montant) {
-        document.getElementById('histName').innerText = "Compte : " + nom;
-        let rows = `<tr><td>12/02/2024</td><td>${montant}$</td><td>${montant*8}$</td></tr>
-                    <tr><td>05/01/2024</td><td>200$</td><td>1600$</td></tr>`;
-        document.getElementById('histBody').innerHTML = rows;
-        document.getElementById('modalHistory').style.display = 'flex';
+        let m = document.getElementById('montantInvest').value;
+        document.getElementById('profitShow').innerText = (m * 8).toFixed(2);
     }
 
     function showPayment() {
         let m = document.getElementById('montantInvest').value;
-        if(m >= 100) {
-            document.getElementById('finalAmt').innerText = m;
-            document.getElementById('finalProf').innerText = m * 8;
-            document.getElementById('modalPayment').style.display = 'flex';
-        } else { alert("Minimum 100$"); }
-    }
-
-    function closeModal() {
-        document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+        if(m < 100) { alert("Le montant minimum est de 100$"); return; }
+        document.getElementById('finalAmt').innerText = m;
+        document.getElementById('finalProf').innerText = m * 8;
+        document.getElementById('modalPayment').style.display = 'flex';
     }
 </script>
 
