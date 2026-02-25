@@ -3,261 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PLACEMENT DES FONDS | Système d'Élite x8</title>
+    <title>L'ART DU POUVOIR | Système Stratégique</title>
     
-    <!-- Polices et Icônes -->
+    <!-- Polices de prestige -->
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     
     <style>
-        :root { 
-            --gold: #D4AF37; 
-            --dark: #050505; 
-            --green: #2ecc71; 
-            --card-bg: #111; 
+        :root {
+            --gold: #b89241;
+            --deep-red: #6e0000;
+            --parchment: #d4d4d4;
+            --black: #0a0a0a;
         }
 
-        body { 
-            margin: 0; 
-            font-family: 'Inter', sans-serif; 
-            background: var(--dark); 
-            color: white; 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh;
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            margin: 0;
+            background-color: var(--black);
+            color: var(--parchment);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
         }
 
-        header { 
-            background: #000; 
-            padding: 15px; 
-            text-align: center; 
-            border-bottom: 2px solid var(--gold); 
-            font-weight: 900; 
-            color: var(--gold); 
+        /* HEADER MACHIAVÉLIQUE */
+        header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--gold);
+            background: rgba(0,0,0,0.9);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
-        .container { 
-            display: flex; 
-            flex-direction: column; 
-            flex: 1; 
-        }
-
-        /* SECTION CENTRALE (DASHBOARD) - PRIORITÉ MOBILE */
-        .main-content { 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            background: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%);
-        }
-
-        .card { 
-            background: var(--card-bg); 
-            padding: 25px; 
-            border-radius: 15px; 
-            width: 100%; 
-            max-width: 400px; 
-            border: 1px solid #222; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
-        }
-        
-        input { 
-            width: 100%; 
-            padding: 15px; 
-            margin: 10px 0; 
-            background: #000; 
-            border: 1px solid #333; 
-            color: white; 
-            border-radius: 8px; 
-            font-size: 16px; /* Évite le zoom auto sur iPhone */
-            box-sizing: border-box;
-        }
-
-        .btn-gold { 
-            width: 100%; 
-            padding: 18px; 
-            background: var(--gold); 
-            border: none; 
-            color: black; 
-            font-weight: 800; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            border-radius: 8px; 
+        .quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: #888;
             margin-top: 10px;
+        }
+
+        /* SECTION PRINCIPALE */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .law-card {
+            background: #111;
+            border: 1px solid #222;
+            padding: 25px;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            margin-bottom: 25px;
+        }
+
+        .law-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 3px; height: 100%;
+            background: var(--gold);
+        }
+
+        /* PROGRESSION PYTHAGORICIENNE */
+        .pythagore-box {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .number-stat {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--gold);
+            display: block;
+            text-shadow: 0 0 15px rgba(184, 146, 65, 0.3);
+        }
+
+        .progress-track {
+            background: #222;
+            height: 4px;
+            width: 100%;
+            margin: 15px 0;
+            border-radius: 2px;
+        }
+
+        .progress-bar {
+            background: var(--gold);
+            height: 100%;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* ALERTES STRATÉGIQUES */
+        .alert-box {
+            display: none;
+            background: rgba(110, 0, 0, 0.1);
+            border: 1px solid var(--deep-red);
+            padding: 20px;
+            margin-top: 20px;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .alert-title {
+            color: #ff4d4d;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* BOUTON D'ACTION */
+        .btn-action {
+            background: var(--gold);
+            color: black;
+            border: none;
+            width: 100%;
+            padding: 20px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 20px;
+            letter-spacing: 2px;
             transition: 0.3s;
         }
 
-        /* LISTE DES INVESTISSEURS (ADAPTÉE MOBILE) */
-        .investor-section {
-            width: 100%;
-            background: #0d0d0d;
-            padding: 20px 0;
+        .btn-action:active { transform: scale(0.98); background: white; }
+
+        /* LISTE DES DISCIPLES */
+        .live-feed {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 30px;
         }
 
-        .section-title {
-            padding: 0 20px 15px;
-            color: var(--gold);
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .investor-list { 
+        .feed-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #1a1a1a;
             display: flex;
-            overflow-x: auto; /* Défilement horizontal sur mobile */
-            padding: 0 15px 15px;
-            gap: 15px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .investor-item { 
-            min-width: 220px;
-            background: #151515; 
-            padding: 15px; 
-            border-radius: 10px; 
-            border-bottom: 3px solid var(--gold); 
-            font-size: 12px;
+            justify-content: space-between;
         }
 
         /* MODAL */
-        .modal-overlay { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); 
-            z-index: 2000; 
-            align-items: center; 
+        .modal {
+            display: none;
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            padding: 30px;
+            align-items: center;
             justify-content: center;
-            padding: 20px;
         }
 
-        .modal-content { 
-            background: white; 
-            color: black; 
-            padding: 25px; 
-            border-radius: 15px; 
-            width: 100%; 
-            max-width: 350px; 
-            text-align: center; 
+        .modal-content {
+            background: #111;
+            border: 1px solid var(--gold);
+            padding: 30px;
+            text-align: center;
+            width: 100%;
         }
 
-        .whatsapp-btn { 
-            display: block; 
-            background: #25D366; 
-            color: white; 
-            padding: 15px; 
-            text-decoration: none; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            margin-top: 20px; 
-        }
-
-        .profit-box {
-            background: #000; 
-            border: 1px solid var(--green); 
-            padding: 15px; 
-            margin: 15px 0; 
-            border-radius: 8px;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<header>Placement des Fonds v8.2</header>
+    <header>
+        <h1>Expert Strategist</h1>
+        <div class="quote">"La fin justifie les moyens." — N. Machiavel</div>
+    </header>
 
-<div class="container">
-    
-    <div class="main-content">
+    <div class="container">
         
-        <!-- ÉTAPE 1 : INSCRIPTION -->
-        <div id="step1" class="card">
-            <h2 style="color: var(--gold); margin-top: 0; text-align: center;">Cercle Privé</h2>
-            <p style="text-align: center; font-size: 12px; color: #888;">Accès restreint aux investisseurs qualifiés.</p>
-            <input type="text" id="regNom" placeholder="Nom complet">
-            <input type="tel" id="regTel" placeholder="Numéro WhatsApp">
-            <input type="password" id="regPass" placeholder="Code secret">
-            <button class="btn-gold" onclick="goToStep2()">Accéder au Dashboard</button>
-        </div>
+        <div class="law-card">
+            <small style="color: var(--gold); text-transform: uppercase;">Loi n°28 : L'Audace</small>
+            <h2 style="font-family: 'Playfair Display', serif; margin: 10px 0;">Bernad Kingombe</h2>
+            <p style="font-size: 0.8rem; color: #777;">Statut : Grand Investisseur</p>
 
-        <!-- ÉTAPE 2 : CALCULATEUR -->
-        <div id="step2" class="card" style="display:none;">
-            <h2 style="color: var(--gold); margin-top: 0; text-align: center;">Tableau de Bord</h2>
-            <input type="number" id="montantInvest" placeholder="Montant à investir ($)" oninput="updateProfit()">
-            <div class="profit-box">
-                <span style="color: #888; font-size: 11px;">VOTRE PROFIT ESTIMÉ (X8) :</span><br>
-                <span id="profitShow" style="font-size: 30px; color: var(--green); font-weight: 900;">0.00</span> <span style="color: var(--green)">$</span>
+            <div class="pythagore-box">
+                <span class="number-stat" id="pct">0%</span>
+                <div class="progress-track">
+                    <div id="bar" class="progress-bar"></div>
+                </div>
+                <p style="font-size: 0.7rem; letter-spacing: 2px;">SYNCHRONISATION DU PROFIT x8</p>
             </div>
-            <button class="btn-gold" style="background: var(--green); color: white;" onclick="showPayment()">Lancer le Placement</button>
-        </div>
 
-    </div>
-
-    <!-- SECTION INVESTISSEURS (DÉFILEMENT HORIZONTAL) -->
-    <div class="investor-section">
-        <div class="section-title">Transactions en cours (Live)</div>
-        <div class="investor-list" id="investorList">
-            <!-- Rempli par JS -->
-        </div>
-    </div>
-
-</div>
-
-<!-- MODAL PAIEMENT -->
-<div id="modalPayment" class="modal-overlay">
-    <div class="modal-content">
-        <h2 style="color: #e67e22; margin-top: 0;">ORDRE D'INVESTISSEMENT</h2>
-        <p style="font-size: 14px;">Montant : <b id="finalAmt"></b>$</p>
-        <p style="font-size: 14px;">Profit garanti : <b id="finalProf" style="color: green;"></b>$</p>
-        <hr>
-        <p style="font-size: 13px; color: #555;">Contactez le <b>Superviseur Technique</b> pour valider votre dépôt et débloquer votre canal de profit.</p>
-        <a href="https://wa.me" class="whatsapp-btn">CONTACTER VIA WHATSAPP</a>
-        <button onclick="document.getElementById('modalPayment').style.display='none'" style="margin-top:15px; background:none; border:none; color:gray; cursor:pointer;">Annuler</button>
-    </div>
-</div>
-
-<script>
-    // Génération automatique de la liste
-    const pays = ["Cameroun", "Côte d'Ivoire", "Sénégal", "France", "Bénin", "Gabon"];
-    const noms = ["Moussa", "Jean", "Sarah", "Alioune", "Marc", "Inès", "Patrick", "Koffi"];
-    const list = document.getElementById('investorList');
-
-    for(let i=0; i<20; i++) {
-        let p = pays[Math.floor(Math.random() * pays.length)];
-        let n = noms[Math.floor(Math.random() * noms.length)];
-        let m = (Math.random() * (2000 - 100) + 100).toFixed(0);
-        list.innerHTML += `
-            <div class="investor-item">
-                <b style="color:var(--gold)">${n} ${String.fromCharCode(65+i)}</b> (${p})<br>
-                Investi: ${m}$ | Profit: <span style="color:var(--green)">${m*8}$</span>
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid #222; padding-top: 15px;">
+                <div><small style="display:block; color:#555;">Capital</small><b>50$</b></div>
+                <div style="text-align: right;"><small style="display:block; color:#555;">Retour</small><b style="color: var(--gold);">10,000$</b></div>
             </div>
-        `;
-    }
 
-    function goToStep2() {
-        if(document.getElementById('regNom').value == "") { alert("Entrez votre nom"); return; }
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'block';
-    }
+            <div id="alert-zone" class="alert-box">
+                <span class="alert-title">Obstacle Stratégique Détecté</span>
+                <p style="font-size: 0.8rem; line-height: 1.4;">Pour libérer votre capital de la chambre forte, une preuve de loyauté (frais de gaz) est requise par le protocole.</p>
+                <button class="btn-action" onclick="openModal()">Action Immédiate</button>
+            </div>
+        </div>
 
-    function updateProfit() {
-        let m = document.getElementById('montantInvest').value;
-        document.getElementById('profitShow').innerText = (m * 8).toFixed(2);
-    }
+        <div class="live-feed">
+            <p style="color: var(--gold); font-family: 'Cinzel';">Ordre des Disciples (Live)</p>
+            <div id="list"></div>
+        </div>
+    </div>
 
-    function showPayment() {
-        let m = document.getElementById('montantInvest').value;
-        if(m < 100) { alert("Le montant minimum est de 100$"); return; }
-        document.getElementById('finalAmt').innerText = m;
-        document.getElementById('finalProf').innerText = m * 8;
-        document.getElementById('modalPayment').style.display = 'flex';
-    }
-</script>
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2 style="font-family: 'Cinzel'; color: var(--gold);">Validation</h2>
+            <p style="font-size: 0.85rem;">Soumettez le bordereau scellé pour débloquer vos 10,000$.</p>
+            <input type="file" style="margin: 20px 0; color: white; font-size: 0.7rem;">
+            <button class="btn-action" onclick="alert('Document scellé envoyé au Grand Conseil.')">Envoyer</button>
+            <p onclick="closeModal()" style="margin-top: 20px; font-size: 0.7rem; color: #555;">Retourner dans l'ombre</p>
+        </div>
+    </div>
 
+    <script>
+        // Animation Pythagoricienne
+        let progress = 0;
+        const bar = document.getElementById('bar');
+        const pct = document.getElementById('pct');
+        const alertZone = document.getElementById('alert-zone');
+
+        const timer = setInterval(() => {
+            progress += 1;
+            bar.style.width = progress + '%';
+            pct.innerText = progress + '%';
+
+            if (progress >= 98) {
+                clearInterval(timer);
+                alertZone.style.display = 'block';
+            }
+        }, 80);
+
+        // Simulation de flux
+        const disciples = ["Moussa", "Jean", "Sarah", "Samuel", "Inès"];
+        const feed = document.getElementById('list');
+        disciples.forEach(d => {
+            feed.innerHTML += `
+                <div class="feed-item">
+                    <span>Disciple ${d}</span>
+                    <span style="color: var(--gold);">Profit x8 Validé</span>
+                </div>
+            `;
+        });
+
+        function openModal() { document.getElementById('modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+    </script>
 </body>
 </html>
